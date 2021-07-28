@@ -5,8 +5,8 @@ from app.forms import (UploadForm, ResultForm)
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import numpy as np
-from keras.preprocessing import image
-from keras.models import load_model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import load_model
 from PIL import Image
 
 model_s = load_model("app/static/model/IDD_20210518.h5")
@@ -39,8 +39,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             new_filename = str(datetime.timestamp(datetime.now())) + \
                 os.path.splitext(filename)[1] 
-            path = os.path.join(app.root_path,
-                'static/img/upload/', new_filename) 
+            path = os.path.join(app.root_path, 'static/img/upload/', new_filename) 
             file.save(path)
             result = evaluate_img(path, form.white_background.data)
             pred = int(np.argmax(result, axis=-1))
